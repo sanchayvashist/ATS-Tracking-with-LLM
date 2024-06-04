@@ -2,10 +2,11 @@ import pytesseract
 import os
 import easyocr
 
+import streamlit as st
 import numpy as np
 import google.generativeai as genai
 
-from pdf2image import convert_from_path
+from pdf2image import convert_from_bytes
 from PIL import Image
 from dotenv import load_dotenv
 
@@ -47,29 +48,35 @@ def straighen_image(image):
 
 if __name__ == "__main__":
     load_dotenv()
+
+    st.title("Resume Shortlisting Using LLM")
     reader = easyocr.Reader(['en'])
 
-    # Convert pdf to image
-    image_list = convert_from_path("Sanchay.pdf")
+    # Get Job discription for the role
+    job_description = st.text_area("Job Descrition for the role")
 
-    # Get api key from enviroment and intialize model
-    key = os.environ["API_KEY"]
-    genai.configure(api_key=key)
-    model = genai.GenerativeModel('gemini-1.5-pro')
-
-    # Use OCR to extract text from image
-    resume_text = ""
-    for image in image_list:
-        image = straighen_image(image)
-        data = np.array(image)
-        results = reader.readtext(data, paragraph=True)
-        for result in results:
-            resume_text = resume_text + " " + result[1]
+    # Allow user to upload 
+    uploaded_file = st.file_uploader("Upload pdf file")
     
-    # Get job description from text file 
-    with open("job_desrciption.txt", "r") as file:
-        job_description = file.read()
+    if uploaded_file and st.button("Generate Response"):
+        # Convert pdf to image
+        image_list = convert_from_bytes(uploaded_file.read())
 
-    print(get_gemini_response(model, resume_text, job_description))
+        # Get api key from enviroment and intialize model
+        key = os.environ["API_KEY"]
+        genai.configure(api_key=key)
+        model = genai.GenerativeModel('gemini-1.5-pro')
+
+        # Use OCR to extract text from image
+        resume_text = ""
+        for image in image_list:
+            image = straighen_image(image)
+            data = np.array(image)
+            results = reader.readtext(data, paragraph=True)
+            for result in results:
+                resume_text = resume_text + " " + result[1]
         
-        
+        # Display response on Interface
+        st.write(get_gemini_response(model, resume_text, job_description))
+            
+            
