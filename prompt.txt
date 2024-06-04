@@ -7,9 +7,9 @@ The Output provided by model should be text containg ATS score in Percentage and
 
 ### Output Format ###
 
-1. ATS Score: <int> Percentage of Resume match with Job Description
-2. Profile Summary: <string> Summary of text in resume, highlighting key points. This should be in points.
-3. Missing Skill: <string> Skills that candidate lacks based on Job Description. This should be in points.
+1. ATS Score(heading 5): <int> Percentage of Resume match with Job Description
+2. Profile Summary(heading 5): <string> Summary of text in resume, highlighting key points. This should be in 3 points.
+3. Missing Skill(heading 5): <string> Skills that candidate lacks based on Job Description. This should be in 3 points.
 
 ### Rules for Calculating ATS Score ###
 - Relevance of Keywords: The presence and frequency of Keywords that match Job Description. Synonyms and Variation of Keywords should also be considered
