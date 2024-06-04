@@ -17,4 +17,4 @@ Developed an AI-driven solution to streamline the recruiter’s resume shortlist
 
     ```streamlit run app.py```
 
-![Inference Screenshot](https://pasteboard.co/s0VDHmm7FDO6.png)
+![Inference Screenshot](https://github.com/sanchayvashist/ATS-Tracking-with-LLM/blob/main/inference.png)
